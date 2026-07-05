@@ -26,7 +26,7 @@
 4. `Full Stack Engineer`
 
 **Hero one-liner (below name):**
-> I build reliable backend systems, document pipelines, and cloud-native infrastructure. Currently interning at DeepLogic AI and studying systems programming with Rust.
+> I build reliable backend systems, scalable architectures, and cloud-native infrastructure, with a passion for high-performance engineering.
 
 **CTA Buttons:**
 - Primary: `View Projects` → scrolls to #projects
