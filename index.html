@@ -1,213 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Subhaan's Portfolio</title>
-        <link rel="stylesheet" href="main_style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <script src="https://kit.fontawesome.com/d63f848b82.js" crossorigin="anonymous"></script>
-    </head>
+    <!-- Primary SEO -->
+    <title>Subhaan Shaikh — Backend &amp; Systems Engineer</title>
+    <meta name="description" content="Subhaan Shaikh is a backend and systems engineer from Mumbai, India. Building FastAPI services, Docker pipelines, and reliable infrastructure. Currently interning at DeepLogic AI.">
+    <meta name="keywords" content="Subhaan Shaikh, backend engineer, systems engineer, FastAPI, Python, Docker, PostgreSQL, Redis, DevOps, software engineer, Mumbai, portfolio">
+    <meta name="author" content="Subhaan Shaikh">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://subhaan0804.github.io/">
 
-    <body>
-        <div id="homepage-main">
-            <div class="navbar">
-                <nav>
-                    <a href="#" class="load-animation"><img src="images/subhaan-portfolio-logo.png"></a>
-                    <ul id="sidebar" class="sidemenu">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#certificates">Certificates</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <i class="fa-solid fa-xmark fas" onclick="closemenu()"></i>
-                    </ul>
-                    <i class="fa-solid fa-bars fas" onclick="openmenu()" id="ham-burger"></i>
-                </nav>
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://subhaan0804.github.io/">
+    <meta property="og:title" content="Subhaan Shaikh — Backend &amp; Systems Engineer">
+    <meta property="og:description" content="Building reliable backend systems, APIs, and infrastructure. FastAPI · Docker · PostgreSQL · Redis · GitHub Actions.">
+    <meta property="og:image" content="https://subhaan0804.github.io/assets/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:site_name" content="Subhaan Shaikh Portfolio">
 
-            <div class="homepage-header-text">
-                <h1 class="load-animation">Hi, I'm <span>Subhaan Shaikh</span></h1>
-                <h3 class="load-animation">Programmer</h3>
-                <p class="load-animation">I am from Mumbai, India. I offer Frontend Development as well as software development services.Coding is my passion & GFX Design is my hobby.</p>
-                <a class="primary-btn load-animation">Download CV</a>
-            </div>
-            </div>
-        </div>
+    <!-- Twitter Card (used by Slack, Discord, and other link-preview tools) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Subhaan Shaikh — Backend &amp; Systems Engineer">
+    <meta name="twitter:description" content="Building reliable backend systems, APIs, and infrastructure. FastAPI · Docker · PostgreSQL · Redis · GitHub Actions.">
+    <meta name="twitter:image" content="https://subhaan0804.github.io/assets/images/og-image.png">
 
-        <div id="about">
-            <section class="about-section">
-                <img src="images/about-section-person.jpg">
-                <article>
-                    <h2 class="sub-title">About Me</h2>
-                    <p>Hi there, I'm Subhaan Shaikh from Mumbai, India. Currently I am FY CO student at Bhausaheb Vartak Polytechnic. I love creating pages where I'm able to actually create enjoyable interactions and experiences for everyone! I offer both design and development services of web applications or websites!. I too offer software development services using my favourite language Python.</p>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Subhaan Shaikh",
+      "url": "https://subhaan0804.github.io/",
+      "image": "https://subhaan0804.github.io/assets/images/og-image.png",
+      "jobTitle": "Backend & Systems Engineer",
+      "description": "Backend and systems engineer building FastAPI services, Docker pipelines, and reliable infrastructure.",
+      "worksFor": { "@type": "Organization", "name": "DeepLogic AI" },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Mumbai",
+        "addressRegion": "Maharashtra",
+        "addressCountry": "IN"
+      },
+      "email": "subhaan0804@gmail.com",
+      "sameAs": [
+        "https://github.com/subhaan0804",
+        "https://www.linkedin.com/in/subhaan-shaikh-38532b286/"
+      ],
+      "knowsAbout": ["Python", "FastAPI", "Docker", "PostgreSQL", "Redis", "Linux", "Bash", "GitHub Actions", "REST APIs", "Backend Engineering", "Systems Engineering"]
+    }
+    </script>
 
-                    <section class="tabs-section">
-                        <ul class="tabs-title">
-                            <li><p class="tab-link active-tab-link" onclick="opentab('skills')">Skills</p></li>
-                            <li><p class="tab-link" onclick="opentab('experience')">Experience</p></li>
-                            <li><p class="tab-link" onclick="opentab('education')" >Education</p></li>
-                        </ul>
+    <!-- Content Security Policy (meta fallback — move to HTTP header when on Cloudflare) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://komarev.com https://visitor-badge.laobi.icu; connect-src 'self'; manifest-src 'self';">
 
-                        <div class="tabs-content active-tab-content" id="skills">
-                            <ul>
-                                <li><span>Front End Development</span><br>
-                                    I can develop frontend of website. I use HTML, CSS, Vanilla JS, React. </li>
-                                <li><span>Software Development</span><br>
-                                    I can develop software for windows/linux using Python.</li>
-                                <li><span>GFX Design</span><br>
-                                    I know Photoshop, Illustrator, Premiere Pro.</li>
-                                <li><span>Other</span><br>
-                                    I have done MS OFFICE Courses like Advanced Excel, MS Word, MS Power Point, PowerBI, SQL by Microsoft Certified trainer Mr.Jatan Shah.</li>
-                            </ul>
-                        </div>
+    <!-- Favicon & PWA -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#020023">
 
-                        <div class="tabs-content" id="experience">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
+    <!-- Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap">
 
-                        <div class="tabs-content" id="education">
-                            <ul>
-                                <li><span>Current</span><br>
-                                    FY CO(Diploma) at Bhausaheb Vartak Polytechnic</li>
-                                <li><span>School</span><br>
-                                    Completed class 10th with 96.20% in 2023</li>
-                            </ul>
-                        </div>
-                    </section>
-                </article>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/utils.css">
+</head>
+<body class="noise noise--fine" style="--noise-grain: 0.22">
+    <a href="#main" class="skip-link">Skip to main content</a>
 
-            </section>
-        </div>
+    <header id="site-header"></header>
 
-        <!-- services -->
+    <main id="main">
+        <section id="hero" aria-label="Introduction"></section>
+        <section id="achievements" aria-label="Achievements"></section>
+        <section id="about" aria-label="About"></section>
+        <section id="experience" aria-label="Experience"></section>
+        <section id="education" aria-label="Education"></section>
+        <section id="skills" aria-label="Skills"></section>
+        <section id="projects" aria-label="Projects"></section>
+        <section id="certifications" aria-label="Certifications"></section>
+        <section id="hackathons" aria-label="Hackathons"></section>
+        <section id="contact" aria-label="Contact"></section>
+    </main>
 
-        <div id="services">
-            <section class="services-section">
-                <h2 class="sub-title">My Services</h2>
+    <footer id="site-footer" class="footer"></footer>
 
-                <div class="services-cards">
-                    <div class="services-card">
-                        <h4>Front End Development</h4>
-                        <p>I offer both design and development services of web apps. I use HTML, CSS, JS and React</p>
-                        <!-- <a href="#">Learn More</a> -->
-                    </div>
-                    <div class="services-card">
-                        <h4>Software Development</h4>
-                        <p>I offer software development services. I have expertise in Python.</p>
-                        <!-- <a href="#">Learn More</a> -->
-                    </div>
-                    <div class="services-card">
-                        <h4>GFX Design</h4>
-                        <p>I am using Photoshop, Illustrator since a long time. It's my hobby.</p>
-                        <!-- <a href="#">Learn More</a> -->
-                    </div>
-                </div>
-            </section>
-        </div>
-        
-        <!-- certificates -->
-        <div id="certificates">
-            <h2 class="sub-title">My Certificates</h2>
-            <section class="certificates-section">
-                <div class="certificate">
-                    <img src="Faber Castell Drawing Certificate.jpg">
-                    <div class="certificate-details">
-                        <p><span>Second</span> in all India Calendar Art competition organised by Faber Castell</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="English Marathon Fifteen at State level 2_1.jpg">
-                    <div class="certificate-details">
-                        <p><span>15<sup>th</sup></span> at Maharashtra state level in English Marathon Competition</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="English Marathon Fifteen at State level_1.jpg">
-                    <div class="certificate-details">
-                        <p><span>15<sup>th</sup></span> at Maharashtra state level in English Marathon Competition</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="English Marathon 27th at State level_1.jpg">
-                    <div class="certificate-details">
-                        <p><span>27<sup>th</sup></span> at Maharashtra state level in English Marathon Competition</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="English Marathon School level First_1.jpg">
-                    <div class="certificate-details">
-                        <p><span>First</span> at School level in English Marathon Competition</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="MPSP_1.jpg">
-                    <div class="certificate-details">
-                        <p><span>72<sup>th</sup></span> at Maharashtra state level in MPSP</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="MPSP_2.jpg">
-                    <div class="certificate-details">
-                        <p><span>20<sup>th</sup></span> at Maharashtra state level in MPSP</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="MPSP_3.jpg">
-                    <div class="certificate-details">
-                        <p><span>150<sup>th</sup></span> at Maharashtra state level in MPSP</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="PowerBI certificate.jpg">
-                    <div class="certificate-details">
-                        <p><span>Completed</span> advanced masterclass on Microsoft PowerBI with Microsoft Certified trainer Mr.Jatan Shah</p>
-                    </div>
-                </div>
-                <div class="certificate">
-                    <img src="Excel certificate.jpg">
-                    <div class="certificate-details">
-                        <p><span>Completed</span> advanced masterclass on Microsoft Excel with Microsoft Certified trainer Mr.Jatan Shah</p>
-                    </div>
-                </div>
-                
-            </section>
-            <!-- <a href="https://drive.google.com/drive/folders/1TUDWNah9DEhX2cB08zNB9lEbsy45lwf3?usp=drive_link" class="primary-btn" target="_blank" id="see-more-btn">See More</a> -->
-        </div>
-
-        <!-- contact -->
-        <div id="contact">
-            <section class="contact-section">
-                <section class="contact-section-left">
-                    <h2 class="sub-title">Contact Me</h2>
-                    <a href="#contact">✉️ subhaan0804@gmail.com</a>
-                    <div class="social-media-icons">
-                        <a target="_blank"  href="https://www.facebook.com/profile.php?id=100092365477447" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                        <a target="_blank"  href="https://www.instagram.com/subhaan_0804/"><i class="fa-brands fa-instagram"></i></a>
-                        <a target="_blank"  href="https://www.linkedin.com/in/subhaan-shaikh-38532b286/"><i class="fa-brands fa-linkedin"></i></a>
-                        <a target="_blank"  href="https://twitter.com/Subhaan_0804"><i class="fa-brands fa-twitter"></i></a>
-                        <a target="_blank"  href="https://github.com/subhaan0804"><i class="fa-brands fa-github"></i></a>
-                    </div> 
-                    <a href="images/subhaan-portfolio-logo.png" class="primary-btn">Download CV</a>
-                </section>
-                <section class="contact-section-right">
-                    <form name="submit-to-google-sheet">
-                        <input type="text" name="Name" placeholder="Your name" required>
-                        <input type="email" name="Email" placeholder="Your email" required>
-                        <textarea name="Message" placeholder="Your Message" rows="6"></textarea>
-                        <button type="submit" class="primary-btn">Submit</button>
-                    </form>
-                    <span id="msg">Message Sent Successfully</span>
-                </section>
-            </section>
-        </div>
-
-        <div class="footer">
-            <p>Copyright &#169; Subhaan, 2023. All rights reserved.</p>
-            <span>Open on desktop for better experience</span>
-        </div>
-
-        <script src="logic.js"></script>
-    </body>
+    <script src="assets/js/icons.js" defer></script>
+    <script src="assets/js/renderer.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer crossorigin="anonymous" integrity="sha512-jEnuDt6jfecCjthQAJ+ed0MTVA++5ZKmlUcmDGBv2vUI/REn6FuIdixLNnQT+vKusE2hhTk2is3cFvv5wA+Sgg=="></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer crossorigin="anonymous"></script>
+    <script src="assets/js/animations.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+</body>
 </html>

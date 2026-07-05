@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Two-Image Particle Morph Transition</title>
+<style>
+  :root{ --bg-top:#0b0c10; --bg-bottom:#000000; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html, body{
+    width:100%; height:100%;
+    background: radial-gradient(ellipse at center, var(--bg-top) 0%, var(--bg-bottom) 100%);
+    overflow:hidden;
+    font-family:-apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  #stage{ position:relative; width:100%; height:100%; }
+  canvas{ position:absolute; top:0; left:0; display:block; }
+  #particleCanvas{ z-index:2; }
+  #vignette{
+    position:absolute; inset:0; z-index:3; pointer-events:none;
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%);
+  }
+  #controls{
+    position:absolute; top:18px; left:50%; transform:translateX(-50%);
+    z-index:6; display:flex; gap:10px;
+  }
+  .uploadBtn{
+    color:rgba(255,255,255,0.7);
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:12px;
+    letter-spacing:0.02em;
+    cursor:pointer;
+    backdrop-filter: blur(6px);
+    transition: background 0.2s ease;
+  }
+  .uploadBtn:hover{ background:rgba(255,255,255,0.14); }
+  input[type="file"]{ display:none; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="particleCanvas"></canvas>
+  <div id="vignette"></div>
+  <div id="controls">
+    <label class="uploadBtn" for="imgAInput">Upload Image A</label>
+    <label class="uploadBtn" for="imgBInput">Upload Image B</label>
+  </div>
+  <input type="file" id="imgAInput" accept="image/*">
+  <input type="file" id="imgBInput" accept="image/*">
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d', { alpha: true });
+  const imgAInput = document.getElementById('imgAInput');
+  const imgBInput = document.getElementById('imgBInput');
+
+  // ---- Timeline (ms) ------------------------------------------------
+  const TIMELINE = {
+    holdA:  3000,   // image A crisp and still
+    transAB: 2600,  // A particulates, displaces slightly, morphs into B
+    holdB:  3000,   // image B crisp and still
+    transBA: 2600   // B particulates, displaces slightly, morphs back into A
+  };
+  const CYCLE = TIMELINE.holdA + TIMELINE.transAB + TIMELINE.holdB + TIMELINE.transBA;
+  const CROSSFADE_EDGE = 0.16;  // fraction of a transition spent crossfading crisp<->particles
+
+  const CONFIG = {
+    targetParticleCount: 20000,  // perf cap — was uncapped before (~113k particles = the freeze)
+    minSampleGap: 2.8,
+    maxParticleSize: 0.85,       // more minute grains — this is the "max" size referenced below
+    dispMin: 28,                 // displacement range in px — bumped up for a more visible, effective transition
+    dispMax: 55,
+    alphaThreshold: 12
+  };
+
+  let dpr = Math.min(window.devicePixelRatio || 1, 1.5); // capped: 2x DPR quadruples pixel work
+  let width, height;
+  let particles = [];
+  let startTime = null;
+  let rect = null;      // {x,y,w,h} shared draw rect for both images
+  let imgA = null, imgB = null;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function easeInOutCubic(t){ return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2; }
+  function smoothstep(edge0, edge1, x){
+    const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
+    return t * t * (3 - 2 * t);
+  }
+  function lerp(a, b, t){ return a + (b - a) * t; }
+
+  function computeRect() {
+    const w = Math.min(width * 0.6, 640);
+    const h = Math.min(height * 0.62, 640);
+    return { x: (width - w) / 2, y: (height - h) / 2, w, h };
+  }
+
+  // draws an image into a rect using "cover" fit (crop to fill, no distortion)
+  function drawCover(targetCtx, img, dx, dy, dw, dh) {
+    const iw = img.width || img.naturalWidth;
+    const ih = img.height || img.naturalHeight;
+    const imgRatio = iw / ih;
+    const rectRatio = dw / dh;
+    let sx, sy, sw, sh;
+    if (imgRatio > rectRatio) {
+      sh = ih; sw = ih * rectRatio;
+      sx = (iw - sw) / 2; sy = 0;
+    } else {
+      sw = iw; sh = iw / rectRatio;
+      sx = 0; sy = (ih - sh) / 2;
+    }
+    targetCtx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+  }
+
+  class Grain {
+    constructor(x, y, rA, gA, bA, aA, rB, gB, bB, aB) {
+      this.x = x; this.y = y;
+      this.rA = rA; this.gA = gA; this.bA = bA; this.aA = aA / 255;
+      this.rB = rB; this.gB = gB; this.bB = bB; this.aB = aB / 255;
+
+      const angle = Math.random() * Math.PI * 2;
+      const mag = CONFIG.dispMin + Math.random() * (CONFIG.dispMax - CONFIG.dispMin);
+      // slight constant wind bias on top of the random direction, so the
+      // motion reads as a gentle gust rather than a uniform radial pop
+      this.dx = Math.cos(angle) * mag + (Math.random() - 0.3) * 10;
+      this.dy = Math.sin(angle) * mag + (Math.random() - 0.6) * 10;
+
+      // tiered sizing: roughly a third full-size, a third 20% smaller, a third 40% smaller,
+      // plus a touch of jitter within each tier so it doesn't look stepped/artificial
+      const tierRoll = Math.random();
+      const tierMul = tierRoll < 0.34 ? 1.0 : (tierRoll < 0.67 ? 0.8 : 0.6);
+      this.size = CONFIG.maxParticleSize * tierMul * (0.92 + Math.random() * 0.08);
+      // precomputed as a fraction of transition duration so the hot loop does no division
+      // wider spread = grains detach/settle less in lockstep, reads more organic
+      this.timeOffsetFrac = (Math.random() - 0.5) * 0.16;
+    }
+  }
+
+  function buildParticles() {
+    if (!imgA || !imgB) return;
+    if (width <= 0 || height <= 0) return; // container not sized yet — bail, resize/load will retry
+
+    rect = computeRect();
+    const w = Math.round(rect.w), h = Math.round(rect.h);
+    if (w <= 0 || h <= 0) return; // guard: getImageData throws IndexSizeError on a 0 dimension
+    const offA = document.createElement('canvas'); offA.width = w; offA.height = h;
+    const offB = document.createElement('canvas'); offB.width = w; offB.height = h;
+    const actxA = offA.getContext('2d');
+    const actxB = offB.getContext('2d');
+
+    drawCover(actxA, imgA, 0, 0, w, h);
+    drawCover(actxB, imgB, 0, 0, w, h);
+
+    const dataA = actxA.getImageData(0, 0, w, h).data;
+    const dataB = actxB.getImageData(0, 0, w, h).data;
+
+    const pts = [];
+    // gap sized so total particle count stays roughly at targetParticleCount,
+    // regardless of screen size — this is what was uncapped before and caused the freeze
+    const gap = Math.max(CONFIG.minSampleGap, Math.sqrt((w * h) / CONFIG.targetParticleCount));
+
+    for (let y = 0; y < h; y += gap) {
+      for (let x = 0; x < w; x += gap) {
+        const idx = (Math.floor(y) * w + Math.floor(x)) * 4;
+        const aA = dataA[idx + 3];
+        const aB = dataB[idx + 3];
+        if (aA > CONFIG.alphaThreshold || aB > CONFIG.alphaThreshold) {
+          const ox = x + (Math.random() - 0.5) * gap * 0.7;
+          const oy = y + (Math.random() - 0.5) * gap * 0.7;
+          pts.push({
+            x: rect.x + ox, y: rect.y + oy,
+            rA: dataA[idx], gA: dataA[idx+1], bA: dataA[idx+2], aA,
+            rB: dataB[idx], gB: dataB[idx+1], bB: dataB[idx+2], aB
+          });
+        }
+      }
+    }
+
+    particles = pts.map(p => new Grain(p.x, p.y, p.rA, p.gA, p.bA, p.aA, p.rB, p.gB, p.bB, p.aB));
+    startTime = null;
+  }
+
+  function drawCrisp(img, opacity) {
+    if (opacity <= 0.01 || !img || !rect) return;
+    ctx.globalAlpha = opacity;
+    drawCover(ctx, img, rect.x, rect.y, rect.w, rect.h);
+    ctx.globalAlpha = 1;
+  }
+
+  function animate(now) {
+    if (startTime === null) startTime = now;
+    const elapsed = (now - startTime) % CYCLE;
+    ctx.clearRect(0, 0, width, height);
+
+    const { holdA, transAB, holdB, transBA } = TIMELINE;
+
+    if (elapsed < holdA) {
+      drawCrisp(imgA, 1);
+
+    } else if (elapsed < holdA + transAB) {
+      const t = (elapsed - holdA) / transAB;
+
+      const crispOut = 1 - smoothstep(0, CROSSFADE_EDGE, t);
+      const crispIn = smoothstep(1 - CROSSFADE_EDGE, 1, t);
+      const particleOp = 1 - crispOut - crispIn;
+
+      drawCrisp(imgA, crispOut);
+      drawCrisp(imgB, crispIn);
+
+      if (particleOp > 0.01) drawParticles(t, true, particleOp);
+
+    } else if (elapsed < holdA + transAB + holdB) {
+      drawCrisp(imgB, 1);
+
+    } else {
+      const t = (elapsed - holdA - transAB - holdB) / transBA;
+
+      const crispOut = 1 - smoothstep(0, CROSSFADE_EDGE, t);
+      const crispIn = smoothstep(1 - CROSSFADE_EDGE, 1, t);
+      const particleOp = 1 - crispOut - crispIn;
+
+      drawCrisp(imgB, crispOut);
+      drawCrisp(imgA, crispIn);
+
+      if (particleOp > 0.01) drawParticles(t, false, particleOp);
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  // Inlined, allocation-free particle draw: no per-particle object creation,
+  // no arc()/trig calls — fillRect is dramatically cheaper at this particle count.
+  function drawParticles(t, forward, particleOp) {
+    const n = particles.length;
+    for (let i = 0; i < n; i++) {
+      const p = particles[i];
+      let pt = t - p.timeOffsetFrac;
+      if (pt < 0) pt = 0; else if (pt > 1) pt = 1;
+
+      const bump = Math.sin(Math.PI * pt);
+      const eased = pt < 0.5 ? 4 * pt * pt * pt : 1 - Math.pow(-2 * pt + 2, 3) / 2;
+
+      let r, g, b, a;
+      if (forward) {
+        r = p.rA + (p.rB - p.rA) * eased;
+        g = p.gA + (p.gB - p.gA) * eased;
+        b = p.bA + (p.bB - p.bA) * eased;
+        a = p.aA + (p.aB - p.aA) * eased;
+      } else {
+        r = p.rB + (p.rA - p.rB) * eased;
+        g = p.gB + (p.gA - p.gB) * eased;
+        b = p.bB + (p.bA - p.bB) * eased;
+        a = p.aB + (p.aA - p.aB) * eased;
+      }
+
+      const alpha = a * particleOp;
+      if (alpha <= 0.02) continue;
+
+      const px = p.x + p.dx * bump;
+      const py = p.y + p.dy * bump;
+      const s = p.size;
+
+      ctx.fillStyle = `rgba(${r | 0},${g | 0},${b | 0},${alpha})`;
+      ctx.fillRect(px - s, py - s, s * 2, s * 2);
+    }
+  }
+
+  // ---- placeholder images (generated, no copyrighted assets) ----------
+  function makePlaceholder(paletteA) {
+    const size = 480;
+    const off = document.createElement('canvas');
+    off.width = size; off.height = size;
+    const c = off.getContext('2d');
+    const cx = size / 2, cy = size / 2;
+    for (let i = 0; i < 8; i++) {
+      const angle = (i / 8) * Math.PI * 2;
+      const rad = size * 0.26;
+      const bx = cx + Math.cos(angle) * rad;
+      const by = cy + Math.sin(angle) * rad;
+      const grad = c.createRadialGradient(bx, by, 0, bx, by, size * 0.3);
+      grad.addColorStop(0, paletteA[i % paletteA.length]);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      c.fillStyle = grad;
+      c.beginPath();
+      c.arc(bx, by, size * 0.3, 0, Math.PI * 2);
+      c.fill();
+    }
+    return off;
+  }
+
+  function loadImageFromSrc(src, which) {
+    const img = new Image();
+    img.onload = () => {
+      if (which === 'A') imgA = img; else imgB = img;
+      if (imgA && imgB) buildParticles();
+    };
+    img.src = src;
+  }
+
+  imgAInput.addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = ev => loadImageFromSrc(ev.target.result, 'A');
+    reader.readAsDataURL(f);
+  });
+  imgBInput.addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = ev => loadImageFromSrc(ev.target.result, 'B');
+    reader.readAsDataURL(f);
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { resize(); buildParticles(); }, 200);
+  });
+
+  resize();
+  imgA = makePlaceholder(['#4285F4', '#7C4DFF', '#00C2A8', '#3F6FE0']);
+  imgB = makePlaceholder(['#EA4335', '#FBBC05', '#FF7043', '#F857A6']);
+
+  // container may report 0 width/height for a frame or two on initial load
+  // (e.g. inside an embedded preview) — retry until it's actually sized
+  function tryInitialBuild() {
+    resize();
+    if (width > 0 && height > 0) {
+      buildParticles();
+    } else {
+      requestAnimationFrame(tryInitialBuild);
+    }
+  }
+  tryInitialBuild();
+
+  requestAnimationFrame(animate);
+})();
+</script>
+
+</body>
+</html>

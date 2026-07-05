@@ -1,0 +1,21 @@
+{
+  "name": "Subhaan Shaikh — Portfolio",
+  "short_name": "Subhaan",
+  "description": "Backend & Systems Engineer — FastAPI, Docker, PostgreSQL, Redis",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020023",
+  "theme_color": "#020023",
+  "icons": [
+    {
+      "src": "assets/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ]
+}

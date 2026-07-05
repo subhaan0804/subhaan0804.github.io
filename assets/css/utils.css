@@ -1,0 +1,129 @@
+/* ═══════════════════════════════════════════════════════════════
+   NOISE UTILITY  —  assets/css/utils.css
+   Procedural grain/noise overlay via SVG feTurbulence.
+   Zero dependencies. Works on any element or pseudo-element.
+
+   ── Two axes of control ──────────────────────────────────────
+
+   CHAOS FACTOR  (grain frequency — coarseness of the texture)
+     Controlled via modifier class — maps to SVG baseFrequency + numOctaves.
+     .noise--fine    high-frequency, tight film grain        (0.70, 6 oct)
+     .noise          medium grain  ← default                 (0.45, 4 oct)
+     .noise--coarse  low-frequency, chunky gritty grain      (0.18, 2 oct)
+
+   GRAIN FACTOR  (overlay opacity — how visible the grain is)
+     Controlled via CSS custom property --noise-grain (0 → 1).
+     Preset shorthand classes:
+     .noise--subtle   0.05  barely perceptible
+     .noise--light    0.12  ← default, recommended
+     .noise--medium   0.28  clearly visible
+     .noise--heavy    0.55  strong grain
+
+   ── Blend mode ───────────────────────────────────────────────
+     Controls how grain interacts with the background colour.
+     Controlled via --noise-blend or preset classes.
+     .noise              overlay    deepens midtones          ← default
+     .noise--screen      screen     lightens, ethereal feel
+     .noise--multiply    multiply   darkens, grounded feel
+     .noise--soft        soft-light gentlest mix, least contrast
+
+   ── Usage examples ───────────────────────────────────────────
+
+     Basic:
+       <div class="noise">…</div>
+
+     Coarse, heavy grain:
+       <div class="noise noise--coarse noise--heavy">…</div>
+
+     Fine grain, custom opacity:
+       <div class="noise noise--fine" style="--noise-grain: 0.2">…</div>
+
+     Screen blend, subtle:
+       <div class="noise noise--screen noise--subtle">…</div>
+
+     Applied directly on body for full-page grain:
+       body { @apply noise noise--fine noise--light; }
+       — or —
+       <body class="noise noise--fine noise--light">…</body>
+
+     On a card with its own background:
+       <article class="card noise noise--medium" style="--noise-blend: soft-light">…</article>
+
+   ── Notes ────────────────────────────────────────────────────
+     - Uses ::after — ensure your element has position: relative (added automatically).
+     - isolation: isolate prevents the blend mode escaping to the page.
+     - border-radius: inherit ensures grain clips to rounded corners.
+     - pointer-events: none means the overlay never intercepts clicks.
+     - z-index: 1 on ::after — if your content disappears, bump content z-index to 2.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Base class ─────────────────────────────────────────────── */
+
+.noise {
+  --noise-grain: 0.12;
+  --noise-blend: overlay;
+
+  position: relative;
+  isolation: isolate;
+}
+
+/* When .noise is applied to <body>, isolation: isolate creates a compositing
+   stacking context that prevents backdrop-filter on fixed descendants (e.g.
+   the navbar pill) from sampling page content — a known Chromium bug.
+   Body is opaque and fills the viewport, so the blend mode doesn't escape
+   regardless of isolation level. */
+body.noise {
+  isolation: auto;
+}
+
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+
+  opacity: var(--noise-grain);
+  mix-blend-mode: var(--noise-blend);
+
+  /* Default: medium chaos — baseFrequency 0.45, 4 octaves */
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='4' seed='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ── Chaos presets ──────────────────────────────────────────── */
+
+/* Fine: high baseFrequency + more octaves = dense film-grain look */
+.noise--fine::after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.70' numOctaves='6' seed='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 140px 140px;
+}
+
+/* Coarse: low baseFrequency + fewer octaves = chunky, gritty texture */
+.noise--coarse::after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.18' numOctaves='2' seed='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 320px 320px;
+}
+
+/* ── Grain intensity presets (--noise-grain) ────────────────── */
+
+.noise--subtle { --noise-grain: 0.05; }
+.noise--light  { --noise-grain: 0.12; }
+.noise--medium { --noise-grain: 0.28; }
+.noise--heavy  { --noise-grain: 0.55; }
+
+/* ── Blend mode presets (--noise-blend) ─────────────────────── */
+
+.noise--screen   { --noise-blend: screen;     }
+.noise--multiply { --noise-blend: multiply;   }
+.noise--soft     { --noise-blend: soft-light; }
+
+/* ── Reduced motion: collapse the overlay ───────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .noise::after {
+    opacity: 0;
+  }
+}

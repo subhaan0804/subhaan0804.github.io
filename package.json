@@ -1,0 +1,21 @@
+{
+  "name": "subhaan0804-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Subhaan Shaikh portfolio — vanilla HTML/CSS/JS, GitHub Pages",
+  "scripts": {
+    "dev": "npx serve . --listen 8080",
+    "lint": "npx eslint assets/js/*.js",
+    "minify:css": "npx csso assets/css/main.css -o assets/css/main.min.css && npx csso assets/css/components.css -o assets/css/components.min.css && npx csso assets/css/animations.css -o assets/css/animations.min.css",
+    "minify:js": "npx terser assets/js/icons.js -o assets/js/icons.min.js --compress --mangle && npx terser assets/js/renderer.js -o assets/js/renderer.min.js --compress --mangle && npx terser assets/js/animations.js -o assets/js/animations.min.js --compress --mangle && npx terser assets/js/main.js -o assets/js/main.min.js --compress --mangle",
+    "build": "npm run minify:css && npm run minify:js",
+    "images:webp": "for f in assets/images/*.jpg assets/images/*.png; do ffmpeg -i \"$f\" -c:v libwebp -q:v 80 \"${f%.*}.webp\" -y; done",
+    "audit": "npx lighthouse http://localhost:8080 --view --only-categories=performance,accessibility,best-practices,seo"
+  },
+  "devDependencies": {
+    "csso-cli": "^4.0.2",
+    "eslint": "^9.0.0",
+    "serve": "^14.0.0",
+    "terser": "^5.0.0"
+  }
+}

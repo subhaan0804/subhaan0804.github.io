@@ -1,0 +1,308 @@
+{
+  "meta": {
+    "name": "Subhaan Shaikh",
+    "title": "Backend & Systems Engineer",
+    "tagline": "I build reliable backend systems, document pipelines, and cloud-native infrastructure. Currently interning at DeepLogic AI and studying systems programming with Rust.",
+    "about": "I am a final-year Computer Engineering student at Vidyavardhini's Bhausaheb Vartak Polytechnic with a 98.00% (5th Sem) academic record, and a Software Development Intern at DeeplogicAI. In my professional role, I build internal engineering tools and optimize server services, prioritizing workflow efficiency, robust security, and clean documentation.\n\nWhile I confidently navigate the full development stack (managing frontend interfaces, mobile applications, and AI integrations), my true passion and core strength lie in backend architecture and cloud scalability. I thrive when designing resilient systems, leveraging Docker and Kubernetes to ensure seamless, containerized deployments and robust performance. Backed by a strong foundation in Python, C++, and JavaScript, I continuously sharpen my algorithmic logic through competitive problem-solving on LeetCode and HackerRank(Maths).\n\nWhether working remotely or on-site, I bring clear communication, strong ownership, and a dedication to continuous learning. Currently exploring the intersection of cloud technologies and Agentic AI, I am actively seeking new professional opportunities to drive impactful technological solutions as a backend-focused full-stack developer.",
+    "philosophy": "I pick tools for correctness and performance, not hype. That's why I'm learning Rust.",
+    "location": "Mumbai, India",
+    "timezone": "IST (UTC+5:30)",
+    "email": "subhaan0804@gmail.com",
+    "available": true,
+    "availabilityText": "Open to internships & opportunities",
+    "cvUrl": "",
+    "lastUpdated": "2026-06-30",
+    "roles": ["Backend Engineer", "Systems Thinker", "DevOps Explorer", "Full Stack Engineer"]
+  },
+  "social": {
+    "github": "https://github.com/subhaan0804",
+    "linkedin": "https://www.linkedin.com/in/subhaan-shaikh-38532b286/",
+    "leetcode": "https://leetcode.com/subhaan0804",
+    "hackerrank": "https://www.hackerrank.com/profile/subhaan0804"
+  },
+  "achievements": [
+    {
+      "stat": 1,
+      "suffix": "st",
+      "label": "Rank in College",
+      "detail": "Two consecutive semesters — 98.00% in 5th Semester Diploma"
+    },
+    {
+      "stat": 6,
+      "suffix": "+",
+      "label": "Hackathons",
+      "detail": "Top 10 at Codeverse 2.0, 3.0 · State Finalist at BitNBuild · National Round at Techathon 2.0"
+    },
+    {
+      "stat": 2434,
+      "prefix": "#",
+      "label": "HackerRank Global",
+      "detail": "Maths Problem Solving · Indian Rank 1195"
+    },
+    {
+      "stat": 70,
+      "suffix": "+",
+      "label": "LeetCode Problems",
+      "detail": "Data Structures & Algorithms — C, C++, JavaScript"
+    },
+    {
+      "stat": 80,
+      "suffix": "+",
+      "label": "Projects at MSBTE",
+      "detail": "State Finalist — selected from 80+ projects, recommended for SaaS commercialization"
+    }
+  ],
+  "experience": [
+    {
+      "company": "DeepLogic AI",
+      "role": "Software Development Intern",
+      "type": "Internship",
+      "location": "Delhi, India · Remote",
+      "period": "Dec 2024 - Present · 1 yr 8 mos",
+      "current": true,
+      "logo": "assets/images/deeplogicai.jpeg",
+      "bullets": [
+        "Architected and deployed internal engineering tools and backend microservices with senior engineers, reducing manual developer operations and decreasing deployment cycle time.",
+        "Implemented industry-standard security protocols, API documentation, and automated code-review processes.",
+        "Engineered task orchestration and automation frameworks for complex backend workflows.",
+        "Developed code obfuscation and minification strategies, enabling secure intellectual property protection during deployment to on-premises enterprise solutions."
+      ],
+      "tags": ["Python", "FastAPI", "Kubernetes", "KEDA", "XML", "PDF", "Docker", "systemd", "SQLite", "PyMuPDF"]
+    },
+    {
+      "company": "Aspiring Media Tech Pvt Ltd",
+      "role": "Software Development Intern",
+      "type": "Internship",
+      "location": "Vasai, Maharashtra, India · On-site",
+      "period": "Jun 2025 - Aug 2025 · 3 mos",
+      "current": false,
+      "logo": "assets/images/Aspiring-Media-Tech-trans-logo.png",
+      "bullets": [
+        "Built a unified cross-platform push notification API that integrates Firebase Cloud Messaging (FCM) and Apple Push Notification Service (APNs) for Android, iOS, and Web as a microservice.",
+        "Designed and integrated a client grading system using a Weighted Recency Scoring algorithm, and integrated it into the admin panel.",
+        "Configured Linux server environments and Docker containers for PDF processing and generation using Puppeteer.",
+        "Integrated and certified third-party logistics APIs (FedEx, DHL) to enable production-ready shipping and tracking."
+      ],
+      "tags": ["Node.js", "Vue.js", "Firebase", "Docker", "Linux", "REST APIs"]
+    }
+  ],
+  "projects": [
+    {
+      "title": "HealthEasy",
+      "subtitle": "AI-Powered Healthcare Ecosystem",
+      "problem": "Healthcare professionals need fast, AI-assisted clinical decisions without compromising patient data privacy.",
+      "description": "Full-stack hospital management system with RAG-based clinical assistant, voice-to-text prescriptions, drug interaction checker, dosage calculator, and chest X-ray ML analysis with local GPU inference. Built across web (React) and mobile (Expo React Native) with a Convex BaaS backend. Patient data stays on-device via Tailscale VPN — no cloud exposure for sensitive records. Evaluated retrieval quality across 5 RAGAS metrics before any clinical demo.",
+      "tags": ["FastAPI", "React", "Expo", "Convex", "ChromaDB", "RAG", "LangChain", "RAGAS", "Tailscale", "Python"],
+      "github": "https://github.com/subhaan0804",
+      "live": "",
+      "featured": true,
+      "deepDive": [
+        "Chose local GPU inference over cloud APIs so patient data never leaves the device — HIPAA-aligned by design, not retrofit",
+        "Tailscale VPN creates an end-to-end encrypted tunnel between inference server and clients — zero open ports, zero cloud exposure",
+        "RAGAS evaluation pipeline (Faithfulness, Answer Relevancy, Context Precision, Context Recall, Correctness) ran before any clinical demo — not as an afterthought",
+        "ChromaDB vector store with semantic chunking for medical document retrieval"
+      ]
+    },
+    {
+      "title": "Civic Grievance Platform",
+      "subtitle": "Geo-tagged Issue Routing for Indian Municipalities",
+      "problem": "Public complaints about potholes, sewage, and civic issues have no reliable routing to the correct authority — they fall into generic portals and get lost.",
+      "description": "Rule-based grievance routing engine that maps geo-tagged citizen reports to the correct municipal, district, or state authority using PostGIS jurisdiction polygons loaded with Maharashtra and Palghar district data. AI acts as a tiebreaker only when boundaries overlap — not the primary router. Geospatial backend already live.",
+      "tags": ["Python", "FastAPI", "PostgreSQL", "PostGIS", "Docker", "GIS", "REST API"],
+      "github": "https://github.com/subhaan0804",
+      "live": "",
+      "featured": true,
+      "wip": true,
+      "deepDive": [
+        "Chose PostGIS over simple lat/lng lookup because jurisdiction boundaries are polygons — a pothole 2m across a border must go to the right ward",
+        "Rule-based routing first — AI tiebreaker invoked only on boundary-overlap cases, keeping inference costs near zero for 90%+ of complaints",
+        "Palghar district and Maharashtra jurisdiction polygon data loaded and indexed",
+        "Routing engine designed to extend across all Indian states — not Maharashtra-only"
+      ],
+      "architecture": {
+        "title": "Civic Grievance — System Flow",
+        "steps": ["Citizen App", "FastAPI", "PostGIS", "Rule Engine", "Authority Router"],
+        "notes": "Incoming geo-tagged reports hit the FastAPI gateway, which validates and passes coordinates to PostGIS for jurisdiction polygon lookup. The Rule Engine resolves 90%+ of complaints directly. Boundary-overlap cases invoke an AI tiebreaker before routing to the correct Municipal, District, or State authority."
+      }
+    },
+    {
+      "title": "CampusEasy",
+      "subtitle": "Agentic Academic Platform",
+      "problem": "Fragmented institutional data — notices, marks, deadlines — scattered across siloed systems with no unified student interface.",
+      "description": "Cross-platform SaaS ecosystem centralizing institutional data across Android, iOS, and Web. Agentic voice RAG system using LangChain and FastAPI lets students query institutional data via natural language. Anti-spoof attendance with 6-second QR refresh + DeviceID tracking. Local LLM inference via Ollama for institutional deployment without cloud dependency.",
+      "tags": ["FastAPI", "LangChain", "Ollama", "React Native", "Expo", "Convex", "Firebase", "RAG"],
+      "github": "https://github.com/subhaan0804",
+      "live": "",
+      "featured": false,
+      "hackathon": "Codeverse 3.0 — Top 10",
+      "deepDive": false
+    },
+    {
+      "title": "KrushiNet",
+      "subtitle": "Digital Farmers Marketplace",
+      "problem": "Indian farmers lack a direct digital marketplace — produce pricing is opaque and middlemen dominate distribution.",
+      "description": "Full-stack agricultural marketplace with real-time commodity price APIs from government data, MongoDB inventory management, and Cloudinary image uploads for product catalogs. JWT + Bcrypt auth. Built under 24-hour hackathon constraints to production-ready quality — advanced to National Round 2.",
+      "tags": ["Node.js", "Express.js", "MongoDB", "Cloudinary", "JWT", "REST API"],
+      "github": "https://github.com/subhaan0804",
+      "live": "",
+      "featured": false,
+      "hackathon": "InnovateYou Techathon 2.0 — National Round 2",
+      "deepDive": false
+    },
+    {
+      "title": "EVI",
+      "subtitle": "Electronic Verification Interface",
+      "problem": "Manual credential verification in recruitment is slow, error-prone, and cannot scale to high application volumes.",
+      "description": "Automated credential verification pipeline using Tesseract.js OCR for image-based extraction and PDF Parse for document handling. Validates educational certificates, work experience proofs, and qualifications in real-time with structured audit logs for compliance.",
+      "tags": ["Node.js", "Express.js", "MongoDB", "Tesseract.js", "OCR", "PDF"],
+      "github": "https://github.com/subhaan0804",
+      "live": "",
+      "featured": false,
+      "hackathon": "Codeverse 2.0 — Top 10",
+      "deepDive": false
+    },
+    {
+      "title": "Android Network Blocker",
+      "subtitle": "Stealth DNS-based VPN App",
+      "problem": "No rootless Android solution exists that silently blocks network traffic by DNS without surfacing in recent apps.",
+      "description": "Stealth Android app built in Kotlin using VpnService and DNS-only architecture. Blocks network traffic at the DNS level without root access. Includes a Learn Mode that observes app traffic patterns before enforcing rules. No UI visible in recent apps — designed for silent background operation.",
+      "tags": ["Kotlin", "Android", "VpnService", "DNS", "Systems"],
+      "github": "https://github.com/subhaan0804",
+      "live": "",
+      "featured": false,
+      "deepDive": false
+    },
+    {
+      "title": "Planeta",
+      "subtitle": "Sustainable Tourism Platform",
+      "problem": "Eco-tourists have no unified platform to calculate trip carbon footprint and offset it through verified programs.",
+      "description": "Eco-tourism platform with carbon emission calculator across multiple transport modes (flights, cars, ships, trains), interactive eco-certified hotel discovery via Leaflet.js maps, and verified carbon offset marketplace. State-level finalist at BitNBuild.",
+      "tags": ["Node.js", "Express.js", "MongoDB", "Leaflet.js", "OpenCage API"],
+      "github": "https://github.com/subhaan0804",
+      "live": "",
+      "featured": false,
+      "hackathon": "BitNBuild Around The World — State Finalist",
+      "deepDive": false
+    }
+  ],
+  "skills": {
+    "Systems & Languages": ["Python", "JavaScript", "TypeScript", "C/C++", "Java", "SQL", "Rust (learning)", "Bash"],
+    "Backend & APIs": ["FastAPI", "Node.js", "Express.js", "REST APIs", "XML/e-invoicing (ZUGFeRD, Factur-X)", "JWT", "WebSockets"],
+    "Data & Storage": ["PostgreSQL", "PostGIS", "MongoDB", "MySQL", "ChromaDB", "Pinecone", "Redis", "SQLite"],
+    "AI & ML": ["RAG", "LangChain", "Ollama", "HuggingFace", "RAGAS", "Local LLM Inference"],
+    "DevOps & Cloud": ["Docker", "Kubernetes", "KEDA", "GitHub Actions", "AWS", "GCP", "Tailscale", "systemd", "minikube"],
+    "Frontend": ["React.js", "React Native (Expo)", "Vue.js", "Flutter", "Tailwind CSS", "HTML/CSS/JS"],
+    "Tools & Platforms": ["Git/GitHub", "Postman", "Figma", "Power BI", "PyMuPDF", "Convex", "Firebase", "uv", "pyenv"]
+  },
+  "osExperience": {
+    "note": "Comfortable at every layer — from systemd services and EFI partition repair to Kubernetes KEDA autoscalers and cloud deployments.",
+    "systems": [
+      { "name": "CachyOS (Arch-based)", "detail": "Daily driver · KDE Plasma · Fish shell · i3 + RX 550 GPU desktop" },
+      { "name": "Ubuntu / Debian", "detail": "Server environments · Docker · Kubernetes (minikube) · Linux sysadmin" },
+      { "name": "Windows 11", "detail": "Secondary laptop · WSL development · lan-mouse KVM sharing" },
+      { "name": "Embedded", "detail": "ESP32 · hardware projects · drone assembly" }
+    ]
+  },
+  "education": [
+    {
+      "institution": "Bhausaheb Vartak Polytechnic",
+      "degree": "Diploma, Computer Engineering",
+      "period": "Aug 2023 – May 2026",
+      "description": "Grade: 97% AGG"
+    },
+    {
+      "institution": "Utkarsha Vidyalaya",
+      "degree": "Secondary Education",
+      "period": "",
+      "description": "Grade: 96.20% (Class 10th)"
+    }
+  ],
+  "certifications": [
+    {
+      "title": "Microsoft Power BI",
+      "achievement": "Advanced masterclass",
+      "image": "assets/images/PowerBI certificate.jpg",
+      "year": "2024",
+      "category": "Technical"
+    },
+    {
+      "title": "Microsoft Excel",
+      "achievement": "Advanced masterclass",
+      "image": "assets/images/Excel certificate.jpg",
+      "year": "2024",
+      "category": "Technical"
+    },
+    {
+      "title": "Faber Castell Calendar Art",
+      "achievement": "2nd — All India",
+      "image": "assets/images/Faber Castell Drawing Certificate.jpg",
+      "year": "",
+      "category": "Arts"
+    },
+    {
+      "title": "English Marathon",
+      "achievement": "1st — School Level",
+      "image": "assets/images/English Marathon School level First_1.jpg",
+      "year": "",
+      "category": "Academic"
+    },
+    {
+      "title": "English Marathon",
+      "achievement": "15th — State Level",
+      "image": "assets/images/English Marathon Fifteen at State level_1.jpg",
+      "year": "",
+      "category": "Academic"
+    },
+    {
+      "title": "MPSP",
+      "achievement": "20th — State Level",
+      "image": "assets/images/MPSP_2.jpg",
+      "year": "",
+      "category": "Academic"
+    }
+  ],
+  "hackathons": [
+    {
+      "name": "Codeverse 3.0",
+      "result": "Top 10 Finish",
+      "project": "CampusEasy",
+      "year": "2026",
+      "tags": ["FastAPI", "RAG", "Ollama", "React Native"]
+    },
+    {
+      "name": "InnovateYou Techathon 2.0",
+      "result": "National Round 2 + Judge Appreciation",
+      "project": "KrushiNet",
+      "year": "2025",
+      "tags": ["Node.js", "MongoDB", "REST API"]
+    },
+    {
+      "name": "BitNBuild Around The World",
+      "result": "State-Level Finalist",
+      "project": "Planeta",
+      "year": "2024",
+      "tags": ["Node.js", "Leaflet.js", "MongoDB"]
+    },
+    {
+      "name": "Codeverse 2.0",
+      "result": "Top 10 Finish",
+      "project": "EVI",
+      "year": "2024",
+      "tags": ["Node.js", "Tesseract.js", "OCR"]
+    },
+    {
+      "name": "MEGAHACK 6.0",
+      "result": "Judge Appreciation",
+      "project": "",
+      "year": "2024",
+      "tags": []
+    },
+    {
+      "name": "HackCelestial 2.0",
+      "result": "Judge Appreciation",
+      "project": "",
+      "year": "2024",
+      "tags": []
+    }
+  ]
+}
