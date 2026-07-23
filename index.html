@@ -59,7 +59,7 @@
     </script>
 
     <!-- Content Security Policy (meta fallback — move to HTTP header when on Cloudflare) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://komarev.com https://visitor-badge.laobi.icu; connect-src 'self'; manifest-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://komarev.com https://visitor-badge.laobi.icu; connect-src 'self' https://api.groq.com; manifest-src 'self';">
 
     <!-- Favicon & PWA -->
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -79,6 +79,7 @@
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/utils.css">
+    <link rel="stylesheet" href="assets/css/chat.css">
 </head>
 <body class="noise noise--fine" style="--noise-grain: 0.22">
     <a href="#main" class="skip-link">Skip to main content</a>
@@ -106,6 +107,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer crossorigin="anonymous"></script>
     <script src="assets/js/animations.js" defer></script>
+    <script src="assets/js/chat.js" defer></script>
     <script src="assets/js/main.js" defer></script>
 </body>
 </html>

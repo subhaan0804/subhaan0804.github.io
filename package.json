@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "npx serve . --listen 8080",
     "lint": "npx eslint assets/js/*.js",
-    "minify:css": "npx csso assets/css/main.css -o assets/css/main.min.css && npx csso assets/css/components.css -o assets/css/components.min.css && npx csso assets/css/animations.css -o assets/css/animations.min.css",
-    "minify:js": "npx terser assets/js/icons.js -o assets/js/icons.min.js --compress --mangle && npx terser assets/js/renderer.js -o assets/js/renderer.min.js --compress --mangle && npx terser assets/js/animations.js -o assets/js/animations.min.js --compress --mangle && npx terser assets/js/main.js -o assets/js/main.min.js --compress --mangle",
+    "minify:css": "npx csso assets/css/main.css -o assets/css/main.min.css && npx csso assets/css/components.css -o assets/css/components.min.css && npx csso assets/css/animations.css -o assets/css/animations.min.css && npx csso assets/css/chat.css -o assets/css/chat.min.css",
+    "minify:js": "npx terser assets/js/icons.js -o assets/js/icons.min.js --compress --mangle && npx terser assets/js/renderer.js -o assets/js/renderer.min.js --compress --mangle && npx terser assets/js/animations.js -o assets/js/animations.min.js --compress --mangle && npx terser assets/js/chat.js -o assets/js/chat.min.js --compress --mangle && npx terser assets/js/main.js -o assets/js/main.min.js --compress --mangle",
     "build:redirects": "node scripts/generate-redirects.js",
     "build": "npm run minify:css && npm run minify:js && npm run build:redirects",
     "images:webp": "for f in assets/images/*.jpg assets/images/*.png; do ffmpeg -i \"$f\" -c:v libwebp -q:v 80 \"${f%.*}.webp\" -y; done",

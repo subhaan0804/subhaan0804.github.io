@@ -8,13 +8,18 @@ document.addEventListener('portfolio:ready', () => {
 
   if (hasGSAP) {
     gsap.registerPlugin(ScrollTrigger);
-    initScrollReveal();
     initHeroEntrance();
-    initCountUp();
-    initParallax();
-    initTimelineFlowLines();
+    initHeroLottie();
+    
+    // Delay other sections rendering by 600ms for gradual loading effect
+    setTimeout(() => {
+      initScrollReveal();
+      initCountUp();
+      initParallax();
+      initTimelineFlowLines();
+    }, 600);
   } else {
-    initFallbackReveal();
+    setTimeout(initFallbackReveal, 600);
   }
 
   initNavScroll();
@@ -23,7 +28,6 @@ document.addEventListener('portfolio:ready', () => {
   initParticleNetwork();
   initMagneticButtons();
   initRoleCycle();
-  initHeroLottie();
   initArchitectureDraw();
 
   document.addEventListener('portfolio:cert-filter-changed', () => {
@@ -60,14 +64,18 @@ function initScrollReveal() {
 function initHeroEntrance() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  gsap.timeline({ delay: 0.08 })
-    .from('.availability-badge', { y: 28, opacity: 0, duration: 0.65, ease: 'power3.out' })
-    .from('.hero-eyebrow',       { y: 22, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.38')
-    .from('#homepage-main h1',  { y: 32, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.4')
-    .from('.hero-role',          { y: 20, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.42')
-    .from('.hero-tagline',       { y: 16, opacity: 0, duration: 0.52, ease: 'power2.out' }, '-=0.36')
-    .from('.hero-ctas > *',      { y: 14, opacity: 0, duration: 0.4,  ease: 'power2.out', stagger: 0.1 }, '-=0.3')
-    .from('.hero-visual',        { x: 48, opacity: 0, duration: 0.85, ease: 'power2.out' }, '-=0.6');
+  const tl = gsap.timeline({ delay: 0.08 });
+  const addIf = (sel, anim, offset) => {
+    if (document.querySelector(sel)) tl.from(sel, anim, offset);
+  };
+
+  addIf('.availability-badge', { y: 28, opacity: 0, duration: 0.65, ease: 'power3.out' });
+  addIf('.hero-eyebrow',       { y: 22, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.38');
+  addIf('#homepage-main h1',  { y: 32, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.4');
+  addIf('.hero-role',          { y: 20, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.42');
+  addIf('.hero-tagline',       { y: 16, opacity: 0, duration: 0.52, ease: 'power2.out' }, '-=0.36');
+  addIf('.hero-ctas > *',      { y: 14, opacity: 0, duration: 0.4,  ease: 'power2.out', stagger: 0.1 }, '-=0.3');
+  addIf('.hero-visual',        { x: 48, opacity: 0, duration: 0.85, ease: 'power2.out' }, '-=0.6');
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -307,22 +315,8 @@ function initRoleCycle() {
    LOTTIE HERO
    ══════════════════════════════════════════════════════════════ */
 function initHeroLottie() {
-  const container = document.getElementById('hero-lottie-canvas');
+  const container = document.getElementById('hero-lottie');
   if (!container || typeof lottie === 'undefined') return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const obs = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting) return;
-    obs.disconnect();
-    fetch('assets/lottie/hero-terminal.json')
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (!data) return;
-        container.closest('.hero-visual')?.querySelector('.terminal-mock')?.remove();
-        const anim = lottie.loadAnimation({ container, renderer: 'svg', loop: true, autoplay: true, animationData: data });
-        document.addEventListener('visibilitychange', () => document.hidden ? anim.pause() : anim.play());
-      }).catch(() => {});
-  }, { threshold: 0.1 });
-  obs.observe(container);
 }
 
 /* ══════════════════════════════════════════════════════════════

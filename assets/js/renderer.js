@@ -39,7 +39,7 @@ const PortfolioRenderer = (() => {
 
   function pictureImage(imagePath, alt, { width = '200', height = '140', lazy = true, decoding = 'async', className = '' } = {}) {
     const webpPath = imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-    return el('picture', { className: `skeleton-loader ${className}`.trim(), style: 'display: block;' }, [
+    return el('picture', { className: `skeleton-loader d-block ${className}`.trim() }, [
       el('source', { srcset: webpPath, type: 'image/webp' }),
       el('img', { 
         src: imagePath, 
@@ -492,7 +492,7 @@ const PortfolioRenderer = (() => {
     const quoteBlock = el('div', { className: 'quote-section' }, [
       el('div', { className: 'quote-wave-bg' }),
       el('div', { className: 'quote-content' }, [
-        el('div', { className: 'quote-eyebrow reveal', html: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> <span style="margin-left: 8px;">ABOUT</span>' }),
+        el('div', { className: 'quote-eyebrow reveal', html: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> <span class="ml-2">ABOUT</span>' }),
         quoteTextEl,
         nextBtn
       ])
@@ -517,7 +517,7 @@ const PortfolioRenderer = (() => {
       text: '👈'
     });
 
-    const originalAboutBlock = el('div', { className: 'about-original-wrapper', style: 'padding-top: 5rem; padding-bottom: 2rem;' }, [
+    const originalAboutBlock = el('div', { className: 'about-original-wrapper pt-5 pb-2' }, [
       el('div', { className: 'section-header' }, [
         el('h2', { className: 'sub-title', text: 'More About Me' }),
       ]),
@@ -530,7 +530,7 @@ const PortfolioRenderer = (() => {
         ]),
         el('div', { className: 'about-right-column' }, [
           el('div', { html: `
-            <svg width="0" height="0" style="position: absolute;">
+            <svg width="0" height="0" class="position-absolute">
               <filter id="invertMask">
                 <feColorMatrix type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0" />
                 <feComponentTransfer>
@@ -766,23 +766,23 @@ const PortfolioRenderer = (() => {
         el('div', { className: 'linkedin-card-header' }, [
           el('h2', { className: 'linkedin-card-title', text: 'Skills' })
         ]),
-        el('div', { style: 'padding: 0 24px 24px;' }, [
+        el('div', { className: 'p-0 px-4 pb-4' }, [
           el(
             'div',
-            { className: 'linkedin-experience-list', style: 'margin-top: 16px;' },
+            { className: 'linkedin-experience-list mt-3' },
             Object.entries(data.skills || {}).map(([category, items]) => {
               const iconHtml = `<img src="assets/images/geometry-abstract-simple.png" class="linkedin-exp-logo" alt="${category} icon">`;
               return el('div', { className: 'linkedin-exp-item' }, [
                 el('div', { className: 'linkedin-exp-icon-wrap', html: iconHtml }),
                 el('div', { className: 'linkedin-exp-content' }, [
                   el('h3', { className: 'linkedin-exp-title', text: category }),
-                  el('p', { className: 'linkedin-exp-company', style: 'margin-top: 4px; line-height: 1.5;', text: items.join(' • ') }),
+                  el('p', { className: 'linkedin-exp-company mt-1 lh-base', text: items.join(' • ') }),
                 ])
               ]);
             })
           ),
           osExp
-            ? el('div', { className: 'os-callout', style: 'margin-top: 24px;' }, [
+            ? el('div', { className: 'os-callout mt-4' }, [
                 el('p', { className: 'os-note', text: osExp.note }),
                 el('div', { className: 'os-list' },
                   (osExp.systems || []).map((sys) =>
@@ -911,7 +911,7 @@ const PortfolioRenderer = (() => {
             item.project
               ? el('p', { className: 'hackathon-project-simple', text: `Project: ${item.project}` })
               : null,
-            item.tags?.length ? el('div', { className: 'tag-list', style: 'margin-top: auto; padding-top: 1rem;' }, renderTags(item.tags, 'tag tag-mono')) : null,
+            item.tags?.length ? el('div', { className: 'tag-list mt-auto pt-3' }, renderTags(item.tags, 'tag tag-mono')) : null,
           ])
         ])
       )
@@ -982,7 +982,7 @@ const PortfolioRenderer = (() => {
     section.replaceChildren(
       el('canvas', { id: 'rain-canvas', className: 'rain-canvas' }),
       el('div', { className: 'contact-section-centered' }, [
-        el('div', { className: 'quote-eyebrow contact-eyebrow-center reveal', html: `${Icons.mail} <span style="margin-left: 8px;">CONTACT</span>` }),
+        el('div', { className: 'quote-eyebrow contact-eyebrow-center reveal', html: `${Icons.mail} <span class="ml-2">CONTACT</span>` }),
         el('h2', {
             className: 'contact-lead-hero reveal',
             html: '<span class="highlight-green">Available</span> for full stack development, backend engineering, and open source.'
@@ -1004,20 +1004,20 @@ const PortfolioRenderer = (() => {
     if (!footer) return;
 
     footer.replaceChildren(
-      el('div', { className: 'footer-left', style: 'flex: 1; display: flex; align-items: center; justify-content: flex-start;' }, [
-        el('a', { href: 'https://visitor-badge.laobi.icu', target: '_blank', rel: 'noopener noreferrer', style: 'opacity: 0.8; transition: opacity 0.2s ease;', onmouseover: "this.style.opacity='1'", onmouseout: "this.style.opacity='0.8'" }, [
+      el('div', { className: 'footer-left d-flex flex-1 align-items-center justify-content-start' }, [
+        el('a', { href: 'https://visitor-badge.laobi.icu', target: '_blank', rel: 'noopener noreferrer', className: 'visitor-badge-link' }, [
           el('img', {
             src: 'https://visitor-badge.laobi.icu/badge?page_id=subhaan0804.subhaan0804.github.io&left_color=%23454545&right_color=%230084ff&height=25&format=true&radius=10',
             alt: 'Visitor Count',
-            style: 'display: block;'
+            className: 'd-block'
           })
         ])
       ]),
-      el('div', { className: 'footer-center', style: 'flex: 2; text-align: center;' }, [
-        el('p', { text: `Copyright © ${data.meta.name}, ${new Date().getFullYear()}. All rights reserved.`, style: 'margin-bottom: 4px;' }),
+      el('div', { className: 'footer-center flex-2 text-center' }, [
+        el('p', { text: `Copyright © ${data.meta.name}, ${new Date().getFullYear()}. All rights reserved.`, className: 'mb-1' }),
         el('p', { className: 'last-updated', text: `Last updated: ${new Date(document.lastModified).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} at ${new Date(document.lastModified).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` })
       ]),
-      el('div', { className: 'footer-right', style: 'flex: 1;' })
+      el('div', { className: 'footer-right flex-1' })
     );
   }
 

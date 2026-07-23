@@ -41,11 +41,13 @@ jobs:
           sed -i 's|assets/css/main.css|assets/css/main.min.css|g' index.html
           sed -i 's|assets/css/components.css|assets/css/components.min.css|g' index.html
           sed -i 's|assets/css/animations.css|assets/css/animations.min.css|g' index.html
+          sed -i 's|assets/css/chat.css|assets/css/chat.min.css|g' index.html
           
           # Replace local JS references with .min.js
           sed -i 's|assets/js/icons.js|assets/js/icons.min.js|g' index.html
           sed -i 's|assets/js/renderer.js|assets/js/renderer.min.js|g' index.html
           sed -i 's|assets/js/animations.js|assets/js/animations.min.js|g' index.html
+          sed -i 's|assets/js/chat.js|assets/js/chat.min.js|g' index.html
           sed -i 's|assets/js/main.js|assets/js/main.min.js|g' index.html
 
       - name: Setup Pages
