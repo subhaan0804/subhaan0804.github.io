@@ -37,11 +37,21 @@ const PortfolioRenderer = (() => {
     return (tags || []).map((tag) => el('span', { className, text: tag }));
   }
 
-  function pictureImage(imagePath, alt, { width = '200', height = '140', lazy = true, decoding = 'async' } = {}) {
+  function pictureImage(imagePath, alt, { width = '200', height = '140', lazy = true, decoding = 'async', className = '' } = {}) {
     const webpPath = imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-    return el('picture', {}, [
+    return el('picture', { className: `skeleton-loader ${className}`.trim(), style: 'display: block;' }, [
       el('source', { srcset: webpPath, type: 'image/webp' }),
-      el('img', { src: imagePath, alt, loading: lazy ? 'lazy' : 'eager', decoding, width, height }),
+      el('img', { 
+        src: imagePath, 
+        alt, 
+        loading: lazy ? 'lazy' : 'eager', 
+        decoding, 
+        width, 
+        height,
+        className: 'lazy-fade-in',
+        onload: "this.classList.add('loaded'); this.parentElement.classList.remove('skeleton-loader');",
+        onerror: "const s = this.parentElement.querySelector('source'); if(s) s.remove(); this.src=this.src; this.onerror=null; this.parentElement.classList.remove('skeleton-loader');"
+      }),
     ]);
   }
 
@@ -179,7 +189,7 @@ const PortfolioRenderer = (() => {
               html: '&times;',
             }),
           ]),
-          ...['Home', 'About', 'Experience', 'Projects', 'Skills', 'Education', 'Certifications', 'Hackathons', 'Contact'].map((label) => {
+          ...['Home', 'About', 'Experience', 'Education', 'Skills', 'Projects', 'Certifications', 'Hackathons', 'Contact'].map((label) => {
             const id = label.toLowerCase();
             return el('li', {}, [el('a', { href: id === 'home' ? '#' : `#${id}`, text: label })]);
           }),
@@ -890,7 +900,7 @@ const PortfolioRenderer = (() => {
       items.map((item) =>
         el('article', { className: 'hackathon-card-full reveal' }, [
           el('div', { className: 'hackathon-image-wrap' }, [
-            el('img', { src: 'assets/images/hck-bg.jpg', alt: item.name })
+            pictureImage('assets/images/hck-bg.jpg', item.name, { width: '100%', height: '100%', lazy: true, className: 'hck-img-skel' })
           ]),
           el('div', { className: 'hackathon-content-wrap' }, [
             el('div', { className: 'hackathon-header-simple' }, [
@@ -1005,9 +1015,7 @@ const PortfolioRenderer = (() => {
       ]),
       el('div', { className: 'footer-center', style: 'flex: 2; text-align: center;' }, [
         el('p', { text: `Copyright © ${data.meta.name}, ${new Date().getFullYear()}. All rights reserved.`, style: 'margin-bottom: 4px;' }),
-        data.meta.lastUpdated
-          ? el('p', { className: 'last-updated', text: `Last updated: ${data.meta.lastUpdated}` })
-          : null
+        el('p', { className: 'last-updated', text: `Last updated: ${new Date(document.lastModified).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} at ${new Date(document.lastModified).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` })
       ]),
       el('div', { className: 'footer-right', style: 'flex: 1;' })
     );
@@ -1016,7 +1024,7 @@ const PortfolioRenderer = (() => {
   function updateDocumentMeta(data) {
     const { meta, social } = data;
     document.title = `${meta.name} — ${meta.title}`;
-    const desc = `${meta.name} is a ${meta.title} from ${meta.location}. Building document pipelines, cloud-native infrastructure, and civic tech. Software Dev Intern at DeepLogic AI.`;
+    const desc = `${meta.name} is a ${meta.title} from ${meta.location}, building scalable architectures, reliable backend systems, and cloud-native infrastructure with a focus on high-performance engineering.`;
 
     setMeta('description', desc);
     setMeta('author', meta.name);

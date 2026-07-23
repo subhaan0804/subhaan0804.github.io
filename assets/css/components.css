@@ -1212,7 +1212,8 @@
     display: flex;
     gap: 0.65rem;
     margin-top: 1.25rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: center;
 }
 
 .social-icon {
@@ -1534,15 +1535,15 @@ main > section {
 .nav-logo::before {
     content: '';
     position: absolute;
-    top: -75%;
-    bottom: -75%;
-    left: -35%;
-    right: -35%;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: rgba(0, 0, 0, 0.1);
-    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    top: -55%;
+    bottom: -55%;
+    left: -20%;
+    right: -20%;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.05);
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
     z-index: -1;
     pointer-events: none;
 }
@@ -1754,7 +1755,8 @@ main > section {
 /* ---- 1440px wide desktops ---- */
 @media (min-width: 1440px) {
     main > section {
-        padding-inline: 8%;
+        margin-inline: 0;
+        padding-inline: max(5vw, calc((100vw - 1280px) / 2));
     }
 
     .homepage-header-text {
@@ -1790,17 +1792,8 @@ main > section {
     .skills-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-}
 
-/* ---- 768px mobile ---- */
-@media (max-width: 768px) {
-    :root {
-        --h1-font-size: 36px;
-        --h2-font-size: 28px;
-        --h3-font-size: 22px;
-    }
-
-    /* Off-canvas drawer */
+    /* Off-canvas drawer moved here to trigger earlier */
     .menu-toggle {
         display: flex;
         color: var(--primary-special-color);
@@ -1858,6 +1851,17 @@ main > section {
         padding: 0.5rem 0.75rem;
         display: block;
     }
+}
+
+/* ---- 768px mobile ---- */
+@media (max-width: 768px) {
+    :root {
+        --h1-font-size: 36px;
+        --h2-font-size: 28px;
+        --h3-font-size: 22px;
+    }
+
+
 
     /* Hero */
     #homepage-main {
